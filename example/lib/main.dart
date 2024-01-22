@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/rendering.dart';
 
 import 'home_page.dart';
@@ -25,6 +26,17 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // theme: ThemeData(
+      //   primaryColor: const Color(0xFF07B9B9),
+      //   primaryColorDark: const Color(0xFFFFFFFF),
+      //   primaryColorLight: const Color(0x33000000),
+      //   textButtonTheme: TextButtonThemeData(
+      //     style: ButtonStyle(
+      //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      //       overlayColor: MaterialStateProperty.all(Colors.transparent),
+      //     ),
+      //   ),
+      // ),
       theme: ThemeData(
         primaryColor: const Color(0xFF07B9B9),
         primaryColorDark: const Color(0xFFFFFFFF),

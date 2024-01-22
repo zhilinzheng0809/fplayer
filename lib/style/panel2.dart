@@ -57,6 +57,9 @@ FPanelWidgetBuilder fPanelBuilder({
 
   /// 视频时间更新
   final void Function()? onVideoTimeChange,
+
+  /// 倍速选择
+  final void Function(double speed)? onSpeedChange,
 }) {
   return (FPlayer player, FData data, BuildContext context, Size viewSize,
       Rect texturePos) {
@@ -87,6 +90,7 @@ FPanelWidgetBuilder fPanelBuilder({
       onVideoEnd: onVideoEnd,
       onVideoPrepared: onVideoPrepared,
       onVideoTimeChange: onVideoTimeChange,
+      onSpeedChange: onSpeedChange,
     );
   };
 }
@@ -137,6 +141,7 @@ class _FPanel2 extends StatefulWidget {
   final void Function()? onVideoEnd;
   final void Function()? onVideoPrepared;
   final void Function()? onVideoTimeChange;
+  final void Function(double speed)? onSpeedChange;
 
   const _FPanel2({
     Key? key,
@@ -165,6 +170,7 @@ class _FPanel2 extends StatefulWidget {
     this.onVideoEnd,
     this.onVideoPrepared,
     this.onVideoTimeChange,
+    this.onSpeedChange,
   })  : assert(hideDuration > 0 && hideDuration < 10000),
         super(key: key);
 
@@ -217,6 +223,7 @@ class __FPanel2State extends State<_FPanel2> {
 
   int sendCount = 0;
 
+  String speedStr = '倍速';
   Map<String, double> speedList = {
     "2.0": 2.0,
     "1.5": 1.5,
@@ -697,7 +704,7 @@ class __FPanel2State extends State<_FPanel2> {
             });
           },
           child: Text(
-            '倍速',
+            speedStr,
             style: TextStyle(
               color: Theme.of(context).primaryColorDark,
             ),
@@ -784,6 +791,12 @@ class __FPanel2State extends State<_FPanel2> {
               if (speed == speedVals) return;
               setState(() {
                 speed = speedVals;
+                widget.onSpeedChange?.call(speed);
+                if (speed != 1.0) {
+                  speedStr = "${speed}X";
+                } else {
+                  speedStr = '倍速';
+                }
                 hideSpeed = true;
                 player.setSpeed(speedVals);
               });
@@ -796,7 +809,7 @@ class __FPanel2State extends State<_FPanel2> {
                 "${mapKey}X",
                 style: TextStyle(
                   color: speed == speedVals
-                      ? Theme.of(context).primaryColor
+                      ? sliderColors.playedColor
                       : Colors.white,
                   fontSize: 16,
                 ),
@@ -968,7 +981,7 @@ class __FPanel2State extends State<_FPanel2> {
                 buildTimeNow(),
                 buildPower(),
                 // buildNetConnect(),
-                buildSetting(context),
+                // buildSetting(context),
               ],
             ),
           ),
@@ -980,7 +993,7 @@ class __FPanel2State extends State<_FPanel2> {
         children: <Widget>[
           buildBack(context),
           Expanded(child: Container()),
-          buildSetting(context),
+          // buildSetting(context),
         ],
       );
     }
@@ -1240,13 +1253,13 @@ class __FPanel2State extends State<_FPanel2> {
               ),
               // 倍数选择
               Positioned(
-                right: 105,
+                right: 50,
                 bottom: 0,
                 child: Visibility(
                   visible: !hideSpeed,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black45,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -1318,13 +1331,13 @@ class __FPanel2State extends State<_FPanel2> {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(0, 0, 0, .2),
+          color: const Color.fromRGBO(0, 0, 0, .8),
           borderRadius: BorderRadius.circular(5),
         ),
         child: const Text(
           "2倍速播放中",
           style: TextStyle(
-            color: Color.fromRGBO(255, 255, 255, .8),
+            color: Colors.white,
             fontSize: 15,
           ),
         ),
@@ -1486,8 +1499,8 @@ class __FPanel2State extends State<_FPanel2> {
           ? widget.videoList![widget.videoIndex].title
           : widget.title,
       style: const TextStyle(
-        fontSize: 22,
-        color: Color(0xFF787878),
+        fontSize: 18,
+        color: Colors.white70,
       ),
     );
   }
@@ -1501,7 +1514,7 @@ class __FPanel2State extends State<_FPanel2> {
             : widget.subTitle,
         style: const TextStyle(
           fontSize: 14,
-          color: Color(0xFF787878),
+          color: Colors.white70,
         ),
       ),
     );
@@ -1512,7 +1525,7 @@ class __FPanel2State extends State<_FPanel2> {
     return Container(
       padding: const EdgeInsets.only(right: 10),
       child: Text(
-        '${DateTime.now().hour}:${DateTime.now().minute}',
+        '${'${DateTime.now().hour}'.padLeft(2, '0')}:${'${DateTime.now().minute}'.padLeft(2, '0')}',
         style: TextStyle(
           color: Theme.of(context).primaryColor,
           fontSize: 12,
