@@ -17,7 +17,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - fplayer (from `.symlinks/plugins/fplayer/ios`)
   - screen_brightness_ios (from `.symlinks/plugins/screen_brightness_ios/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
 
 SPEC REPOS:
   trunk:
@@ -33,7 +33,7 @@ EXTERNAL SOURCES:
   screen_brightness_ios:
     :path: ".symlinks/plugins/screen_brightness_ios/ios"
   shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
 
 SPEC CHECKSUMS:
   battery_plus: 7851ab482c336dd101ae735dc9363f01e1223c7c
@@ -41,8 +41,8 @@ SPEC CHECKSUMS:
   fplayer: 8faa429580eca9c07b871ed030635191f4aba292
   fplayer-core: b98b1e7a7a6bc771376ba6a1f660499389d8abf5
   screen_brightness_ios: 715ca807df953bf676d339f11464e438143ee625
-  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
 
 PODFILE CHECKSUM: 663715e941f9adb426e33bf9376914006f9ea95b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.11.3
