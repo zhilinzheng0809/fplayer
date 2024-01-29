@@ -60,6 +60,12 @@ FPanelWidgetBuilder fPanelBuilder({
 
   /// 倍速选择
   final void Function(double speed)? onSpeedChange,
+
+  /// 截图回调
+  final void Function(Uint8List blob)? onTakeSnapshot,
+
+  /// 返回回调
+  final void Function()? onBack,
 }) {
   return (FPlayer player, FData data, BuildContext context, Size viewSize,
       Rect texturePos) {
@@ -91,6 +97,8 @@ FPanelWidgetBuilder fPanelBuilder({
       onVideoPrepared: onVideoPrepared,
       onVideoTimeChange: onVideoTimeChange,
       onSpeedChange: onSpeedChange,
+      onTakeSnapshot: onTakeSnapshot,
+      onBack: onBack,
     );
   };
 }
@@ -142,6 +150,8 @@ class _FPanel2 extends StatefulWidget {
   final void Function()? onVideoPrepared;
   final void Function()? onVideoTimeChange;
   final void Function(double speed)? onSpeedChange;
+  final void Function(Uint8List blob)? onTakeSnapshot;
+  final void Function()? onBack;
 
   const _FPanel2({
     Key? key,
@@ -171,6 +181,8 @@ class _FPanel2 extends StatefulWidget {
     this.onVideoPrepared,
     this.onVideoTimeChange,
     this.onSpeedChange,
+    this.onTakeSnapshot,
+    this.onBack,
   })  : assert(hideDuration > 0 && hideDuration < 10000),
         super(key: key);
 
@@ -893,6 +905,8 @@ class __FPanel2State extends State<_FPanel2> {
 
   // 全屏与退出全屏图标
   Widget buildFullScreenButton(BuildContext context, double height) {
+    // 去除全屏按钮
+    return Container();
     Icon icon = player.value.fullScreen
         ? Icon(
             Icons.fullscreen_exit_rounded,
@@ -1076,6 +1090,7 @@ class __FPanel2State extends State<_FPanel2> {
   void takeSnapshot() {
     player.takeSnapShot().then((v) {
       var provider = MemoryImage(v);
+      widget.onTakeSnapshot?.call(v);
       precacheImage(provider, context).then((_) {
         setState(() {
           screenshot = true;
@@ -1098,13 +1113,13 @@ class __FPanel2State extends State<_FPanel2> {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(0, 0, 0, .2),
+          color: const Color.fromRGBO(0, 0, 0, .8),
           borderRadius: BorderRadius.circular(5),
         ),
         child: const Text(
           "截图成功",
           style: TextStyle(
-            color: Color.fromRGBO(255, 255, 255, .8),
+            color: Color.fromRGBO(255, 255, 255, 1.0),
             fontSize: 15,
           ),
         ),
@@ -1486,9 +1501,13 @@ class __FPanel2State extends State<_FPanel2> {
         color: Theme.of(context).primaryColor,
       ),
       onPressed: () {
-        player.value.fullScreen
-            ? player.exitFullScreen()
-            : Navigator.of(context).pop();
+        if (widget.onBack != null) {
+          widget.onBack?.call();
+        } else {
+          player.value.fullScreen
+              ? player.exitFullScreen()
+              : Navigator.of(context).pop();
+        }
       },
     );
   }
