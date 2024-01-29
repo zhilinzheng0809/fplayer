@@ -275,6 +275,8 @@ class __FPanel2State extends State<_FPanel2> {
   // snapshot
   bool screenshot = false;
 
+  bool showSpeed = false;
+
   // Is it needed to clear seek data in FData (widget.data)
   bool _needClearSeekData = true;
 
@@ -811,6 +813,11 @@ class __FPanel2State extends State<_FPanel2> {
                 }
                 hideSpeed = true;
                 player.setSpeed(speedVals);
+                showSpeed = true;
+                Timer.periodic(const Duration(seconds: 2), (timer) {
+                  showSpeed = false;
+                  timer.cancel();
+                });
               });
             },
             child: Container(
@@ -1104,6 +1111,27 @@ class __FPanel2State extends State<_FPanel2> {
     }).catchError((e) {
       FLog.d("get snapshot failed");
     });
+  }
+
+  Widget speedToastMsg() {
+    return Offstage(
+      offstage: !showSpeed,
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(0, 0, 0, .8),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          "${speed}X",
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget screenshotMsg() {
@@ -1449,6 +1477,10 @@ class __FPanel2State extends State<_FPanel2> {
           Align(
             alignment: Alignment.center,
             child: videoLoading,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: speedToastMsg(),
           ),
           Align(
             alignment: Alignment.center,

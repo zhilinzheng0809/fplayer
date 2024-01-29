@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fplayer_example/recent_list.dart';
+import 'package:fplayer_example/video_player_page.dart';
 
 import 'app_bar.dart';
 
@@ -58,6 +59,18 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               text: "Online Samples",
+            ),
+            HomeItem(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const VideoScreenPage(
+                        url: 'http://player.alicdn.com/video/aliyunmedia.mp4'),
+                  ),
+                );
+              },
+              text: "视频播放",
             ),
             /*
             Container(
