@@ -1545,13 +1545,19 @@ class __FPanel2State extends State<_FPanel2> {
   }
 
   Widget buildTitle() {
-    return Text(
-      widget.isVideos
-          ? widget.videoList![widget.videoIndex].title
-          : widget.title,
-      style: const TextStyle(
-        fontSize: 18,
-        color: Colors.white70,
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width - 200,
+      ),
+      child: Text(
+        widget.isVideos
+            ? widget.videoList![widget.videoIndex].title
+            : widget.title,
+        style: const TextStyle(
+          fontSize: 18,
+          color: Colors.white70,
+        ),
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
